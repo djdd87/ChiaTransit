@@ -179,7 +179,7 @@ namespace ChiaTransit
                 }
                 else
                 {
-                    output.AppendLine("  empty");
+                    output.AppendLine(_empty);
                 }
 
                 output.AppendLine(new string(' ', _separator.Length));
