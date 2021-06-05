@@ -7,6 +7,10 @@ This replaces the need for a Powershell script or batch files and provides real 
 
 The application will follow the same pattern as the plotter and ensure that the files are copied to the final destination suffixed with ```.tmp``` until they're complete to prevent the farmer from showing them as invalid plots.
 
+## Buy Me A Coffee! :coffee:
+
+I made this for my own needs and don't expect anything in return. However, if you find it useful and would like to buy me a coffee, feel free to do it at [__Buy me a coffee! :coffee:__](https://buymeacoff.ee/djdd87). This is entirely optional, but would be appreciated! Or even better, help supported this project by contributing changes.
+
 # CLI Reference
 
 ## Examples
