@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -82,6 +84,7 @@ namespace ChiaTransit
             {
                 _worker.CancelAsync();
                 Thread.Sleep(1000);
+                Console.Clear();
                 Console.WriteLine("Cancelling");
                 cancellationToken.Cancel();
                 eventArgs.Cancel = true;
@@ -142,9 +145,10 @@ namespace ChiaTransit
             while (!cancellationToken.IsCancellationRequested)
             {
                 // Get all the files in the source directory
+                StringBuilder output = new();
+                
                 string[] files = Directory.GetFiles(_source);
-
-                System.Text.StringBuilder output = new System.Text.StringBuilder();
+                files = files.Where(x => Path.GetExtension(x) == FILE_EXTENSION_PLOT).ToArray();
 
                 output.AppendLine(_separator);
                 output.AppendLine(_outstandingHeader);
@@ -154,12 +158,6 @@ namespace ChiaTransit
                 {
                     foreach (string file in files)
                     {
-                        if (Path.GetExtension(file) != FILE_EXTENSION_PLOT)
-                        {
-                            // This isn't a finished/valid plot file, so ignore it
-                            continue;
-                        }
-
                         if (_activeFile == null)
                         {
                             _activeFile = file;
@@ -187,6 +185,7 @@ namespace ChiaTransit
                 output.AppendLine(_separator);
                 output.AppendLine(_completeHeader);
                 output.AppendLine(_separator);
+
                 if (_completeFiles.Count > 0)
                 {
                     foreach (var file in _completeFiles)
@@ -201,6 +200,7 @@ namespace ChiaTransit
 
                 Console.SetCursorPosition(0, 0);
                 Console.Write(output.ToString());
+                Console.SetCursorPosition(0, 0);
                 Console.CursorVisible = false;
 
                 await Task.Delay(2000);
