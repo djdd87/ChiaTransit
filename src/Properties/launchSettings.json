@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ChiaTransit": {
+      "commandName": "Project",
+      "commandLineArgs": "--s P:\\Complete --d \\\\dd-nas-02\\Delta"
+    }
+  }
+}
