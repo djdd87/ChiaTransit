@@ -30,8 +30,10 @@ namespace ChiaTransit
 
         private static BackgroundWorker _worker;
 
-        private static string _source;
-        private static string _destination;
+        private static string[] _sourceDirectories;
+        private static string[] _destinationDirectories;
+
+        private static int _nextDirectory = -1;
 
         private static string _separator;
         private static string _empty;
@@ -49,13 +51,18 @@ namespace ChiaTransit
             _args = args;
 
             // Get the souce and destination directories
-            _source = GetDirectory("Source", ARG_DIRECTORY_SOURCE, ARG_DIRECTORY_SOURCE_LONG);
-            _destination = GetDirectory("Destination", ARG_DIRECTORY_DESTINATION, ARG_DIRECTORY_DESTINATION_LONG);
-            if (string.IsNullOrWhiteSpace(_source) || string.IsNullOrWhiteSpace(_destination))
+            _sourceDirectories = GetDirectories("Source", ARG_DIRECTORY_SOURCE, ARG_DIRECTORY_SOURCE_LONG);
+            _destinationDirectories = GetDirectories("Destination", ARG_DIRECTORY_DESTINATION, ARG_DIRECTORY_DESTINATION_LONG);
+
+            if (_sourceDirectories == null || _sourceDirectories.Length == 0)
             {
                 return;
             }
-            else if (_source.Equals(_destination, StringComparison.OrdinalIgnoreCase))
+            if (_destinationDirectories == null || _destinationDirectories.Length == 0)
+            {
+                return;
+            }
+            else if (_sourceDirectories.Any(x=> _destinationDirectories.Contains(x, StringComparer.OrdinalIgnoreCase)))
             {
                 Console.WriteLine("The source and destination directories cannot be the same.");
                 return;
@@ -100,23 +107,25 @@ namespace ChiaTransit
         /// <param name="friendlyName">The friendly name of the directory to fetch (used for logging).</param>
         /// <param name="args">The args to find the directory.</param>
         /// <returns>The valid directory path, or null if not specified or not found.</returns>
-        private static string GetDirectory(string friendlyName, params string[] args)
+        private static string[] GetDirectories(string friendlyName, params string[] args)
         {
-            string directory = GetArg(args); 
-            if (string.IsNullOrWhiteSpace(directory))
+            string[] directories = GetDirectoryList(args); 
+            if (directories.Length == 0)
             {
-                Console.WriteLine($"{friendlyName} directory not specified.");
+                Console.WriteLine($"No directories specified for '{friendlyName}'.");
                 return null;
             }
 
-            directory = directory.Trim();
-            if (!Directory.Exists(directory))
+            foreach (string directory in directories)
             {
-                Console.WriteLine($"{friendlyName} directory not found.");
-                return null;
+                if (!Directory.Exists(directory))
+                {
+                    Console.WriteLine($"{friendlyName} directory not found.");
+                    return null;
+                }
             }
 
-            return directory;
+            return directories;
         }
 
         /// <summary>
@@ -124,8 +133,11 @@ namespace ChiaTransit
         /// </summary>
         /// <param name="configs">A list of config values to pull from the args, e.g. --source.</param>
         /// <returns>The argument or null if not found.</returns>
-        private static string GetArg(params string[] configs)
+        private static string[] GetDirectoryList(params string[] configs)
         {
+            List<string> results = new();
+
+            bool found = false;
             foreach (string config in configs)
             {
                 for (int i = 0; i < _args.Length; i++)
@@ -133,11 +145,23 @@ namespace ChiaTransit
                     string arg = _args[i];
                     if (arg.Equals(config, StringComparison.OrdinalIgnoreCase))
                     {
-                        return _args[i + 1];
+                        found = true;
+                    }
+                    else if (found)
+                    {
+                        if (arg.StartsWith("--"))
+                        {
+                            // We've hit a new argument, so exit
+                            break;
+                        }
+                        else
+                        {
+                            results.Add(arg.Trim());
+                        }
                     }
                 }
             }
-            return null;
+            return results.ToArray();
         }
 
         async static Task Worker()
@@ -146,10 +170,8 @@ namespace ChiaTransit
             {
                 // Get all the files in the source directory
                 StringBuilder output = new();
-                
-                string[] files = Directory.GetFiles(_source);
-                files = files.Where(x => Path.GetExtension(x) == FILE_EXTENSION_PLOT).ToArray();
 
+                string[] files = GetSourceFiles();
                 output.AppendLine(_separator);
                 output.AppendLine(_outstandingHeader);
                 output.AppendLine(_separator);
@@ -207,7 +229,21 @@ namespace ChiaTransit
             }
         }
 
-        private static void WriteRow(System.Text.StringBuilder output, string fileName, string status, string progress)
+        /// <summary>
+        /// Gets all the files in the specified source directories.
+        /// </summary>
+        /// <returns>A list of valid plot files.</returns>
+        private static string[] GetSourceFiles()
+        {
+            List<string> results = new();
+            foreach (string source in _sourceDirectories)
+            {
+                results.AddRange(Directory.GetFiles(source));
+            }
+            return results.Where(x => Path.GetExtension(x) == FILE_EXTENSION_PLOT).ToArray();
+        }
+
+        private static void WriteRow(StringBuilder output, string fileName, string status, string progress)
         {
             int standardFileNameLength = 95;
             if (fileName.Length > standardFileNameLength)
@@ -233,9 +269,12 @@ namespace ChiaTransit
                 // Add a slight delay
                 Task.WaitAll(Task.Delay(5000));
 
+                // Get the destination
+                string targetDestination = CycleDestinationDirectory();
+
                 // Copy the file to the destination (appending .tmp to prevent issues with the farmer picking it up too early and classing it as invalid)
                 string fileName = Path.GetFileName(_activeFile);
-                string finalDestination = Path.Combine(_destination, fileName);
+                string finalDestination = Path.Combine(targetDestination, fileName);
                 string destination = finalDestination + FILE_EXTENSION_SUFFIX_TMP;
 
                 Stopwatch stopwatch = Stopwatch.StartNew();
@@ -261,6 +300,30 @@ namespace ChiaTransit
                 Console.WriteLine($"ERROR - {ex.Message}");
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Moves to the next target directory.
+        /// </summary>
+        /// <returns>The destination directory to copy to.</returns>
+        private static string CycleDestinationDirectory()
+        {
+            if (_nextDirectory == -1 || _destinationDirectories.Length == 1)
+            {
+                // This is the first iteration, or there's no need to cycle
+                _nextDirectory = 0;
+            }
+            else
+            {
+                _nextDirectory++;
+                if (_nextDirectory > _destinationDirectories.Length - 1)
+                {
+                    // We've gone through all destination directories, so go back to the beginning.
+                    _nextDirectory = 0;
+                }
+            }
+
+            return _destinationDirectories[_nextDirectory];
         }
     }
 }
