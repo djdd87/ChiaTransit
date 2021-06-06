@@ -11,6 +11,8 @@ The application will follow the same pattern as the plotter and ensure that the 
 
 I made this for my own needs and don't expect anything in return. However, if you find it useful and would like to buy me a coffee, feel free to do it at [__Buy me a coffee! :coffee:__](https://buymeacoff.ee/djdd87). This is entirely optional, but would be appreciated! Or even better, help supported this project by contributing changes.
 
+Chia: xch1qk9t6rrjv3z6j3u69tet5lw3cf9zrr56vhrl7xz9ezj0q80fcjfs9ytktr
+
 # CLI Reference
 
 ## Examples
