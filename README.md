@@ -19,15 +19,17 @@ Chia: xch1qk9t6rrjv3z6j3u69tet5lw3cf9zrr56vhrl7xz9ezj0q80fcjfs9ytktr
 * ```ChiaTransit --s C:\Chia\Temp --d D:\Chia\Final```
 * ```ChiaTransit --s C:\Chia\Temp --d "D:\Final Dir"```
 * ```ChiaTransit --s C:\Chia\Temp --d \\\\nas\final```
+* ```ChiaTransit --s C:\Chia\Temp D:\Chia\Temp --d \\\\nas\final```
+* ```ChiaTransit --s C:\Chia\Temp D:\Chia\Temp --d \\\\nas\final \\\\nas\final\farm1 \\\\nas\final\farm2```
 
 ## Source (```--s```, ```--source```)
-Specifies the source directory from which to check for new plot files.
+Specifies the source directory from which to check for new plot files. Separate each source directly with a blank space. Directory paths with spaces must be enclosed in double quotes.
 
 ## Destination (```--d```, ```--destination```)
-Specifies the destination directory where the finished plot files should be moved.
+Specifies the destination directory where the finished plot files should be moved. Separate each destination directly with a blank space. Directory paths with spaces must be enclosed in double quotes. 
+
+ChiaTransit will move through the destination drives in sequence, i.e. with 3 plots to copy and 3 destination directories A, B and C, each drive will receive 1 plot. With 2 destination directories A will receive 2 plots and B will receive 1; when the 4th plot is moved, it will be sent to B.
 
 # TODO
-* Add multiple source directories
-* Add multiple destination directories
 * Add a check for whether the destination drive is full
 * Allow the max number of copy operations to be set.
