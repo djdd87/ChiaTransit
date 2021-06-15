@@ -18,7 +18,7 @@ Chia: xch1qk9t6rrjv3z6j3u69tet5lw3cf9zrr56vhrl7xz9ezj0q80fcjfs9ytktr
 ## Examples
 * ```ChiaTransit --s C:\Chia\Temp --d D:\Chia\Final```
 * ```ChiaTransit --s C:\Chia\Temp --d "D:\Final Dir"```
-* ```ChiaTransit --s C:\Chia\Temp --d \\\\nas\final```
+* ```ChiaTransit --s C:\Chia\Temp --d \\nas\final```
 * ```ChiaTransit --s C:\Chia\Temp D:\Chia\Temp --d \\nas\final```
 * ```ChiaTransit --s C:\Chia\Temp D:\Chia\Temp --d \\nas\final\farm1 \\nas\final\farm2```
 
