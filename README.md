@@ -17,19 +17,10 @@ Chia: xch1qk9t6rrjv3z6j3u69tet5lw3cf9zrr56vhrl7xz9ezj0q80fcjfs9ytktr
 
 Download the respective zip file from [releases](https://github.com/djdd87/ChiaTransit) for your OS and architecture.
 
-~~## Linux
-Extract all contents to a folder and execute using ./chia-transit --s {source(s)} --d {destination(s)}.
-
 ## Windows
 Extract all contents to a folder and execute using .\chia-transit --s {source(s)} --d {destination(s)}.
 
 # Examples 
-
-~~## Linux
-~* ```./chia-transit --s /home/user/chia/complete --d /path/to/final```
-~* ```./chia-transit --s /home/user/chia/complete --d "/path/to/final dir"```
-~* ```./chia-transit --s /home/user/chia/complete/1 /home/user/chia/complete/2 --d /nas/final```
-~* ```./chia-transit --s /home/user/chia/complete/1 /home/user/chia/complete/2 --d /nas/final/farm1 /nas/final/farm2```
 
 ## Windows
 * ```.\chia-transit --s C:\Chia\Complete --d D:\Chia\Final```
