@@ -17,7 +17,7 @@ Chia: xch1qk9t6rrjv3z6j3u69tet5lw3cf9zrr56vhrl7xz9ezj0q80fcjfs9ytktr
 
 Download the respective zip file from [releases](https://github.com/djdd87/ChiaTransit) for your OS and architecture.
 
-## Linux
+~~## Linux
 Extract all contents to a folder and execute using ./chia-transit --s {source(s)} --d {destination(s)}.
 
 ## Windows
@@ -25,11 +25,11 @@ Extract all contents to a folder and execute using .\chia-transit --s {source(s)
 
 # Examples 
 
-## Linux
-* ```./chia-transit --s /home/user/chia/complete --d /path/to/final```
-* ```./chia-transit --s /home/user/chia/complete --d "/path/to/final dir"```
-* ```./chia-transit --s /home/user/chia/complete/1 /home/user/chia/complete/2 --d /nas/final```
-* ```./chia-transit --s /home/user/chia/complete/1 /home/user/chia/complete/2 --d /nas/final/farm1 /nas/final/farm2```
+~~## Linux
+~* ```./chia-transit --s /home/user/chia/complete --d /path/to/final```
+~* ```./chia-transit --s /home/user/chia/complete --d "/path/to/final dir"```
+~* ```./chia-transit --s /home/user/chia/complete/1 /home/user/chia/complete/2 --d /nas/final```
+~* ```./chia-transit --s /home/user/chia/complete/1 /home/user/chia/complete/2 --d /nas/final/farm1 /nas/final/farm2```
 
 ## Windows
 * ```.\chia-transit --s C:\Chia\Complete --d D:\Chia\Final```
@@ -50,5 +50,6 @@ Specifies the destination directory where the finished plot files should be move
 ChiaTransit will move through the destination drives in sequence, i.e. with 3 plots to copy and 3 destination directories A, B and C, each drive will receive 1 plot. With 2 destination directories A will receive 2 plots and B will receive 1; when the 4th plot is moved, it will be sent to B.
 
 # TODO
+* Move away from Kernal32.dll or use an alt library to IOExtensions in order to support Linux
 * Add a check for whether the destination drive is full
 * Allow the max number of copy operations to be set.
