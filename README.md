@@ -26,18 +26,17 @@ Extract all contents to a folder and execute using .\chia-transit --s {source(s)
 # Examples 
 
 ## Linux
-* ```./chia-transit --s C:\Chia\Temp --d D:\Chia\Final```
-* ```./chia-transit --s C:\Chia\Temp --d "D:\Final Dir"```
-* ```./chia-transit --s C:\Chia\Temp --d \\nas\final```
-* ```./chia-transit --s C:\Chia\Temp D:\Chia\Temp --d \\nas\final```
-* ```./chia-transit --s C:\Chia\Temp D:\Chia\Temp --d \\nas\final\farm1 \\nas\final\farm2```
+* ```./chia-transit --s /home/user/chia/complete --d /path/to/final```
+* ```./chia-transit --s /home/user/chia/complete --d "/path/to/final dir"```
+* ```./chia-transit --s /home/user/chia/complete/1 /home/user/chia/complete/2 --d /nas/final```
+* ```./chia-transit --s /home/user/chia/complete/1 /home/user/chia/complete/2 --d /nas/final/farm1 /nas/final/farm2```
 
 ## Windows
-* ```.\chia-transit --s C:\Chia\Temp --d D:\Chia\Final```
-* ```.\chia-transit --s C:\Chia\Temp --d "D:\Final Dir"```
-* ```.\chia-transit --s C:\Chia\Temp --d \\nas\final```
-* ```.\chia-transit --s C:\Chia\Temp D:\Chia\Temp --d \\nas\final```
-* ```.\chia-transit --s C:\Chia\Temp D:\Chia\Temp --d \\nas\final\farm1 \\nas\final\farm2```
+* ```.\chia-transit --s C:\Chia\Complete --d D:\Chia\Final```
+* ```.\chia-transit --s C:\Chia\Complete --d "D:\Final Dir"```
+* ```.\chia-transit --s C:\Chia\Complete --d \\nas\final```
+* ```.\chia-transit --s C:\Chia\Complete D:\Chia\Temp --d \\nas\final```
+* ```.\chia-transit --s C:\Chia\Complete D:\Chia\Temp --d \\nas\final\farm1 \\nas\final\farm2```
 
 
 # CLI Reference
